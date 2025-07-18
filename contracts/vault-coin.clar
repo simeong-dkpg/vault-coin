@@ -239,3 +239,32 @@
 (define-read-only (get-min-stake-period)
   (var-get min-stake-period)
 )
+
+;; Get total reward pool available
+(define-read-only (get-reward-pool)
+  (var-get reward-pool)
+)
+
+;; Get total amount of sBTC staked in the protocol
+(define-read-only (get-total-staked)
+  (var-get total-staked)
+)
+
+;; Calculate current APY based on reward rate
+(define-read-only (get-current-apy)
+  (let ((rate-basis (var-get reward-rate)))
+    ;; Convert basis points to percentage (e.g., 5 basis points = 0.5%)
+    (* rate-basis u100)
+  )
+)
+
+;; Get comprehensive protocol statistics summary
+(define-read-only (get-protocol-stats)
+  {
+    total-staked: (var-get total-staked),
+    reward-pool: (var-get reward-pool),
+    reward-rate: (var-get reward-rate),
+    min-stake-period: (var-get min-stake-period),
+    current-apy: (get-current-apy),
+  }
+)
